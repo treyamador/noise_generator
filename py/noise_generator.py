@@ -6,7 +6,6 @@ import math
 class WAV:
 
     def __init__(self,nchannels=1,sampwidth=1,framerate=44100,nframes=4410000):
-        ''' args: path, nchannels, sampwidth, framerate, nframes, data '''
         self.set_nchannels(nchannels)
         self.set_sampwidth(sampwidth)
         self.set_framerate(framerate)
@@ -45,25 +44,43 @@ class WAV:
         pass
 
 
-def create_single_tone_wave(filename):
-    # WAVEDATA = WAVEDATA+chr(int(math.sin(x/((BITRATE/FREQUENCY)/math.pi))*127+128))
-    wav = WAV()
-    frames = [int(math.sin(x/100)*128)+127 for x in range(44100*100)]
-    wav.set_data(frames)
-    wav.write_file(filename)
+class Note:
+    
+    def __init__(self,tone,length):
+        self.tone = tone
+        self.length = length
 
-def create_a_note_wav(filename):
-    sinusoid = [int(math.sin(880*math.pi*x/44100)*128+128) for x in range(4410000)]
-    wav = WAV()
-    wav.set_data(sinusoid)
-    wav.write_file(filename)
 
+class Music:
+
+    def __init__(self):
+        self.notes = []
+
+    def add_notes(self,notes):
+        if isinstance(notes,list):
+            for note in notes:
+                self.notes.append(note)
+        elif isinstance(notes,Note):
+            self.notes.append(notes)
+
+    def create_sinusoid(self,tone,frames):
+        return [int(math.sin(tone*math.pi*x/44100)*128+128) for x in range(44100*frames)]
+
+    def write(self,filename):
+        sinusoid = []
+        for note in self.notes:
+            sinusoid.extend(self.create_sinusoid(note.tone,note.length))
+        wav = WAV()
+        wav.set_data(sinusoid)
+        wav.write_file(filename)
+        
 
 def driver():
-    create_a_note_wav('sample.wav')
-    
+    music = Music()
+    notes = [Note(880,1),Note(1100,1),Note(1320,1)]
+    music.add_notes(notes)
+    music.write('sample.wav')
 
 if __name__ == '__main__':
     driver()
-
 
