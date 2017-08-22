@@ -54,7 +54,11 @@ class Note:
 class Music:
 
     def __init__(self):
+        self.instruments = {}
         self.notes = []
+
+    def add_instrument(self,name):
+        self.instruments[name] = []
 
     def add_notes(self,notes):
         if isinstance(notes,list):
@@ -64,7 +68,7 @@ class Music:
             self.notes.append(notes)
 
     def create_sinusoid(self,tone,frames):
-        return [int(math.sin(tone*math.pi*x/44100)*128+128) for x in range(44100*frames)]
+        return [int(math.sin(tone*math.pi*x/44100)*127+128) for x in range(int(44100*frames))]
 
     def write(self,filename):
         sinusoid = []
@@ -77,7 +81,41 @@ class Music:
 
 def driver():
     music = Music()
-    notes = [Note(880,1),Note(1100,1),Note(1320,1)]
+    #notes = [
+    #    Note(880,0.25),Note(1100,0.25),Note(1320,0.25),Note(1760,0.25),
+    #    Note(880,0.25),Note(1100,0.25),Note(1320,0.25),Note(1760,0.25),
+    #    Note(880,0.25),Note(1100,0.25),Note(1320,0.25),Note(1760,0.25),
+    #    Note(880,0.25),Note(1100,0.25),Note(1320,0.25),Note(1760,0.25),
+    #]
+
+    freq = {
+
+        'A4':440.00,
+        'B4':493.88,
+        
+        'C5':523.25,
+        'E5':659.25,
+        'G5':783.99,
+        'A5':880.00,
+        'B5':987.77,
+        
+        'C6':1046.50
+
+    }
+
+    notes = [
+        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['G5'],0.25),Note(freq['C6'],0.25),
+        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['G5'],0.25),Note(freq['C6'],0.25),
+        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['G5'],0.25),Note(freq['C6'],0.25),
+        Note(freq['B4'],0.25),Note(freq['E5'],0.25),Note(freq['G5'],0.25),Note(freq['B5'],0.25),
+        
+        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['A5'],0.25),Note(freq['C6'],0.25),
+        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['A5'],0.25),Note(freq['C6'],0.25),
+        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['A5'],0.25),Note(freq['C6'],0.25),
+        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['A5'],0.25),Note(freq['C6'],0.25),
+        
+
+    ]
     music.add_notes(notes)
     music.write('sample.wav')
 
