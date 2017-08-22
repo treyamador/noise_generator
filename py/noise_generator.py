@@ -1,10 +1,11 @@
+import random
 import wave
 import math
 
 
 class WAV:
 
-    def __init__(self,nchannels=2,sampwidth=2,framerate=44100,nframes=441000):
+    def __init__(self,nchannels=2,sampwidth=2,framerate=44100,nframes=4410000):
         ''' args: path, nchannels, sampwidth, framerate, nframes, data '''
         self.set_nchannels(nchannels)
         self.set_sampwidth(sampwidth)
@@ -46,7 +47,12 @@ class WAV:
 
 def create_wave(filename):
     wav = WAV()
-    frames = [int(math.sin(x)) for x in range(44100*10)]
+    frames = [int(math.sin(x)*128)+127 for x in range(44100*100)]
+
+    #for frame in frames[:100]:
+    #    print(frame,end=' ')
+    #print('\n')
+
     wav.set_data(frames)
     wav.write_file(filename)
 
