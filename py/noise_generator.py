@@ -68,7 +68,7 @@ class Music:
             self.notes.append(notes)
 
     def create_sinusoid(self,tone,frames):
-        return [int(math.sin(tone*math.pi*x/44100)*127+128) for x in range(int(44100*frames))]
+        return [int(math.sin(tone*2*math.pi*x/44100)*127+128) for x in range(int(44100*frames))]
 
     def write(self,filename):
         sinusoid = []
@@ -83,7 +83,7 @@ def driver():
     music = Music()
     
     freq = {
-
+        
         'C4':261.63,
         'D4':293.66,
         'E4':329.63,
@@ -113,17 +113,12 @@ def driver():
 
     notes = [
         
-        Note(freq['C4'],0.1125),
-        Note(0,0.3875),
-        Note(freq['C4'],0.1125),
-        Note(0,0.3875),
-        Note(freq['C4'],0.1125),
-        Note(0,0.3875),
-        Note(freq['C4'],0.1125),
-        Note(0,0.3875),
+        Note(freq['E4'],5.0),
     
     ]
     
+
+
     music.add_notes(notes)
     music.write('sample.wav')
 
