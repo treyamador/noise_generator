@@ -81,43 +81,52 @@ class Music:
 
 def driver():
     music = Music()
-    #notes = [
-    #    Note(880,0.25),Note(1100,0.25),Note(1320,0.25),Note(1760,0.25),
-    #    Note(880,0.25),Note(1100,0.25),Note(1320,0.25),Note(1760,0.25),
-    #    Note(880,0.25),Note(1100,0.25),Note(1320,0.25),Note(1760,0.25),
-    #    Note(880,0.25),Note(1100,0.25),Note(1320,0.25),Note(1760,0.25),
-    #]
-
+    
     freq = {
 
+        'C4':261.63,
+        'D4':293.66,
+        'E4':329.63,
+        'F4':349.23,
+        'G4':392.00,
         'A4':440.00,
         'B4':493.88,
         
         'C5':523.25,
+        'D5':587.33,
         'E5':659.25,
+        'F5':698.46,
         'G5':783.99,
         'A5':880.00,
         'B5':987.77,
         
-        'C6':1046.50
+        'C6':1046.50,
+        'D6':1174.66,
+        'E6':1318.51,
+        'F6':1396.91,
+        'G6':1567.98,
+        'A6':1760.00,
+        'B6':1975.53
 
     }
 
-    notes = [
-        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['G5'],0.25),Note(freq['C6'],0.25),
-        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['G5'],0.25),Note(freq['C6'],0.25),
-        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['G5'],0.25),Note(freq['C6'],0.25),
-        Note(freq['B4'],0.25),Note(freq['E5'],0.25),Note(freq['G5'],0.25),Note(freq['B5'],0.25),
-        
-        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['A5'],0.25),Note(freq['C6'],0.25),
-        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['A5'],0.25),Note(freq['C6'],0.25),
-        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['A5'],0.25),Note(freq['C6'],0.25),
-        Note(freq['C5'],0.25),Note(freq['E5'],0.25),Note(freq['A5'],0.25),Note(freq['C6'],0.25),
-        
 
+    notes = [
+        
+        Note(freq['C4'],0.1125),
+        Note(0,0.3875),
+        Note(freq['C4'],0.1125),
+        Note(0,0.3875),
+        Note(freq['C4'],0.1125),
+        Note(0,0.3875),
+        Note(freq['C4'],0.1125),
+        Note(0,0.3875),
+    
     ]
+    
     music.add_notes(notes)
     music.write('sample.wav')
+
 
 if __name__ == '__main__':
     driver()
