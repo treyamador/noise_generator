@@ -3,6 +3,13 @@ import wave
 import math
 
 
+class Vec2D:
+
+    def __init__(self, x=None, y=None):
+        self.x = x
+        self.y = y
+
+
 class WAV:
 
     def __init__(self,nchannels=1,sampwidth=1,framerate=44100,nframes=4410000):
@@ -51,14 +58,63 @@ class Note:
         self.length = length
 
 
+'''
+
+class Voices:
+
+    def __init__(self):
+        self.voices = []
+
+    def __getitem__(self,key):
+        pass
+
+    def __setitem__(self,key,value):
+        pass
+
+    def __len__(self):
+        pass
+
+'''
+
+
+
+class Voices:
+
+    def __init__(self):
+        self.voices = []
+        self.keys = {}
+
+    def __getitem__(self,key):
+        val = self.keys[key]
+        return self.voices[val]
+
+    def __setitem__(self,key,value):
+        if key in self.keys:
+            self.voices[self.keys[key]] = value
+        else:
+            self.keys[key] = len(self.keys)
+            self.voices.append(value)
+
+    def __len__(self):
+        return len(self.voices)
+
+    def print(self):
+        for key,val in self.keys.items():
+            print(key,end=' ')
+            print(self.voices[val])
+        print('voices',len(self.voices))
+        print('keys',len(self.keys))
+
+
+
 class Music:
 
     def __init__(self):
-        self.instruments = {}
+        self.voices = {}
         self.notes = []
 
     def add_instrument(self,name):
-        self.instruments[name] = []
+        pass
 
     def add_notes(self,notes):
         if isinstance(notes,list):
@@ -77,13 +133,10 @@ class Music:
         wav = WAV()
         wav.set_data(sinusoid)
         wav.write_file(filename)
-        
 
-def driver():
-    music = Music()
-    
-    freq = {
-        
+
+def init_freq():
+    return {
         'C4':261.63,
         'D4':293.66,
         'E4':329.63,
@@ -107,20 +160,28 @@ def driver():
         'G6':1567.98,
         'A6':1760.00,
         'B6':1975.53
-
     }
-
-
-    notes = [
         
-        Note(freq['E4'],5.0),
-    
+
+def driver():
+    music = Music()
+    freq = init_freq()
+    notes = [
+        Note(freq['A4'],5.0),
     ]
-    
-
-
     music.add_notes(notes)
     music.write('sample.wav')
+
+    # testing voices class
+    voices = Voices()
+    voices['A1'] = 'Hey there!'
+    voices['B1'] = 'How it goes?'
+    voices['C1'] = 'Life is a cruel joke.'
+    voices['B1'] = 'Perhaps things will work out.'
+    voices['C1'] = 'Yeah, I agree.'
+    voices['D1'] = 'But there is more too it.'
+    print('The len is',len(voices))
+    voices.print()
 
 
 if __name__ == '__main__':
