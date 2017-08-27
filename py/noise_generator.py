@@ -58,26 +58,6 @@ class Note:
         self.length = length
 
 
-'''
-
-class Voices:
-
-    def __init__(self):
-        self.voices = []
-
-    def __getitem__(self,key):
-        pass
-
-    def __setitem__(self,key,value):
-        pass
-
-    def __len__(self):
-        pass
-
-'''
-
-
-
 class Voices:
 
     def __init__(self):
@@ -102,19 +82,22 @@ class Voices:
         for key,val in self.keys.items():
             print(key,end=' ')
             print(self.voices[val])
-        print('voices',len(self.voices))
-        print('keys',len(self.keys))
+        print('Num voices',len(self.voices))
+        print('Num keys',len(self.keys))
 
 
 
 class Music:
 
     def __init__(self):
-        self.voices = {}
         self.notes = []
+        self.voices = Voices()
 
-    def add_instrument(self,name):
-        pass
+    def __getitem__(self,key):
+        return self.voices[key]
+
+    def __setitem__(self,key,val):
+        self.voices[key] = val
 
     def add_notes(self,notes):
         if isinstance(notes,list):
@@ -124,7 +107,9 @@ class Music:
             self.notes.append(notes)
 
     def create_sinusoid(self,tone,frames):
-        return [int(math.sin(tone*2*math.pi*x/44100)*127+128) for x in range(int(44100*frames))]
+        return [
+            int(math.sin(2*math.pi*tone*x/44100)*127+128) for x in range(int(44100*frames))
+        ]
 
     def write(self,filename):
         sinusoid = []
@@ -163,25 +148,44 @@ def init_freq():
     }
         
 
+
+def create_sinusoid(tone,frames):
+    return [
+        int(math.sin(2*math.pi*tone*x/44100)*127+128) for x in range(int(44100*frames))
+    ]
+
+
+class Modulator:
+
+    def __init__(self):
+        pass
+
+    def noise_effect(self,sinusoid,intensity):
+        for i in range(len(sinusoid)):
+            offset = random.randrange(-intensity,intensity)
+            sinusoid[i] += offset
+            if sinusoid[i] >= 256:
+                sinusoid[i] = 255
+            elif sinusoid[i] <= 0:
+                sinusoid[i] = 0
+
+
 def driver():
     music = Music()
     freq = init_freq()
-    notes = [
-        Note(freq['A4'],5.0),
-    ]
+    notes = [ Note(freq['A4'],5.0) ]
     music.add_notes(notes)
     music.write('sample.wav')
 
-    # testing voices class
-    voices = Voices()
-    voices['A1'] = 'Hey there!'
-    voices['B1'] = 'How it goes?'
-    voices['C1'] = 'Life is a cruel joke.'
-    voices['B1'] = 'Perhaps things will work out.'
-    voices['C1'] = 'Yeah, I agree.'
-    voices['D1'] = 'But there is more too it.'
-    print('The len is',len(voices))
-    voices.print()
+    # practice
+    modulator = Modulator()
+    freq = init_freq()
+    sinusoid = create_sinusoid(freq['A4'],5.0)
+    modulator.noise_effect(sinusoid,1.0)
+    wav = WAV()
+    wav.set_data(sinusoid)
+    wav.write_file('noisy.wav')
+
 
 
 if __name__ == '__main__':
